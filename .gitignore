@@ -1,3 +1,12 @@
+# CMake files
+build/
+build-debug/
+build-release/
+compile_commands.json
+
+# ctags file
+tags
+
 # Prerequisites
 *.d
 
