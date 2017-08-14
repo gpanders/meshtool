@@ -14,13 +14,21 @@ if (OPENMP_FOUND)
 endif()
 
 add_subdirectory(lib)
-add_subdirectory(bin2ascii)
 
-file(GLOB SOURCES "src/*.cpp")
+set(SOURCES
+    src/vertex.cpp      src/vertex.h
+    src/face.cpp        src/face.h
+    src/colmap.cpp      src/colmap.h
+    src/meshtool.cpp    src/meshtool.h
+)
+
+include_directories(
+    src
+)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
-target_include_directories(${PROJECT_NAME} PRIVATE
-    include
-    ${EIGEN3_INCLUDE_DIRS}
-)
+
+target_include_directories(${PROJECT_NAME} PRIVATE ${EIGEN3_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} ${LIBS})
+
+add_subdirectory(bin2ascii)

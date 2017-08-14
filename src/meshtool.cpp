@@ -8,7 +8,8 @@
 #include <fstream>
 #include <string>
 
-#define UNCERTAINTY_LB 0.05
+#define UNCERTAINTY_UB 0.0001
+#define UNCERTAINTY_LB 0.00005
 
 int main(int argc, const char * argv[])
 {
@@ -106,9 +107,19 @@ int main(int argc, const char * argv[])
             if (num_points > 0)
             {
                 vertex.SetUncertainty(uncertainty / num_points);
-                if (vertex.Uncertainty() > UNCERTAINTY_LB)
+                if (vertex.Uncertainty() > UNCERTAINTY_UB)
                 {
                     vertex.SetColor({ 255, 0, 0 });
+                }
+                else if (vertex.Uncertainty() < UNCERTAINTY_LB)
+                {
+                    vertex.SetColor({ 0, 255, 0 });
+                }
+                else
+                {
+                    const uint8_t r = static_cast<uint8_t>(nearbyint((255 / (UNCERTAINTY_UB - UNCERTAINTY_LB)) * (vertex.Uncertainty() - UNCERTAINTY_LB)));
+                    const uint8_t g = 255 - r;
+                    vertex.SetColor({ r, g, 0 });
                 }
             }
 
